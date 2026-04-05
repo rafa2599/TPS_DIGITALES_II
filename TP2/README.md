@@ -42,7 +42,8 @@ El código está desarrollado en lenguaje Ensamblador (Assembly) para el microco
 ## 🧪 Pruebas End-to-End (E2E)
 <img width="766" height="457" alt="image" src="https://github.com/user-attachments/assets/7a502343-6896-44c9-a897-dae938658f3e" />
 
-
+<video src="./Docs/TP2_circutio - Proteus 8 Professional - Schematic Capture 2026-04-05 15-11-53.mp4" controls="controls" width="100%">
+</video>
 
 
 
