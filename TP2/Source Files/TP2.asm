@@ -104,8 +104,44 @@ CFG_DELAY_100ms MACRO
 
 ;*** Inicialización de Registros ***
 INICIO          CFG_LEDS
-		CFG_SWITCH
+				CFG_SWITCH
                 CFG_DELAY_1s
-		CFG_DELAY_300ms
-		CFG_DELAY_200ms
-		CFG_DELAY_100ms
+			CFG_DELAY_300ms
+			CFG_DELAY_200ms
+			CFG_DELAY_100ms
+;*** Programa Principal ***
+
+LOOP        
+            BTFSC   PORTE, RE0      ; ¿Botón suelto? (Pull-up = 1)
+            GOTO    MODO_BLINK      ; Si es 1 (suelto), hace parpadeo
+            GOTO    MODO_SECUENCIA  ; Si es 0 (presionado), va a la secuencia indefinida
+
+MODO_BLINK
+            CALL    BLINKING
+            GOTO    LOOP            ; Vuelve a leer el botón
+
+MODO_SECUENCIA
+            ; --- 1. RUNNING LIGHT (3 repeticiones) ---
+            CALL    BUCLE_RL
+REPITE_PATRON_RL    
+            CALL    BLINK_RL        
+            DECFSZ  CONT_RL, F      
+            GOTO    REPITE_PATRON_RL
+
+            ; --- 2. BIDIRECTIONAL RUNNING LIGHT (3 repeticiones) ---
+            CALL    BUCLE_BRL
+REPITE_PATRON_BRL
+            CALL    BLINK_BRL
+            DECFSZ  CONT_BRL,F
+            GOTO    REPITE_PATRON_BRL
+
+            ; --- 3. CRAWLING (3 repeticiones) ---
+            CALL    BUCLE_CRAW
+REPITE_PATRON_CRAW
+            CALL    BLINK_CRAW
+            DECFSZ  CONT_CRAW,F
+            GOTO    REPITE_PATRON_CRAW
+
+            ; --- BUCLE INDEFINIDO DE SECUENCIAS ---
+            ; Una vez terminados los 3 efectos, vuelve a chequear el sw
+            GOTO    LOOP
