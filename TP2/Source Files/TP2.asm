@@ -45,3 +45,55 @@ CBLOCK  0x20
 	CONT_BRL
 	CONT_CRAW
 ENDC
+;*** Declaración de Macros para Configuración de Registros ***
+CFG_LEDS         MACRO
+                BANKSEL TRISD
+                CLRF    TRISD       ; Configura TODOS los pines de PORTD como salidas (0)
+                BANKSEL PORTD
+                CLRF    PORTD       ; Apaga TODOS los LEDs de PORTD poniéndolos en 0
+                ENDM
+		
+CFG_SWITCH      MACRO
+                BANKSEL TRISE		;Nos situamos en el registro TRISE
+                BSF     TRISE, TRISE0   ; Pone el bit 0 de TRISE en 1 (RE0 como Entrada)
+                
+                BANKSEL ANSEL		;Nos  situamos en el registro ANSEL
+                BCF     ANSEL, ANS5     ; Pone el bit 5 de ANSEL en 0 (ANS5 como Digital)
+		BANKSEL PORTE
+                ENDM
+		
+CFG_DELAY_1s    MACRO
+                MOVLW   D'255'
+                MOVWF   DELAY1_Init
+                MOVLW   D'245'
+                MOVWF   DELAY2_Init
+                MOVLW   D'4'
+                MOVWF   DELAY3_Init
+                ENDM
+		
+CFG_DELAY_300ms MACRO
+		MOVLW	.120
+		MOVWF	DELAY4_Init
+		MOVLW	.39
+		MOVWF	DELAY5_Init
+		MOVLW	.20
+		MOVWF	DELAY6_Init
+		ENDM
+
+CFG_DELAY_200ms MACRO
+		MOVLW	.80
+		MOVWF	DELAY7_Init
+		MOVLW	.39
+		MOVWF	DELAY8_Init
+		MOVLW	.20
+		MOVWF	DELAY9_Init
+		ENDM
+		
+CFG_DELAY_100ms MACRO
+                MOVLW   .8
+                MOVWF   DELAY10_Init
+                MOVLW   .125
+                MOVWF   DELAY11_Init
+                MOVLW   .32
+                MOVWF   DELAY12_Init
+                ENDM	
