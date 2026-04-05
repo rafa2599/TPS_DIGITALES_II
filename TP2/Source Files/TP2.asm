@@ -97,3 +97,15 @@ CFG_DELAY_100ms MACRO
                 MOVLW   .32
                 MOVWF   DELAY12_Init
                 ENDM	
+;*** Inicialización del MCU ***
+                ORG     0x00
+                GOTO    INICIO
+                ORG     0x05
+
+;*** Inicialización de Registros ***
+INICIO          CFG_LEDS
+		CFG_SWITCH
+                CFG_DELAY_1s
+		CFG_DELAY_300ms
+		CFG_DELAY_200ms
+		CFG_DELAY_100ms
