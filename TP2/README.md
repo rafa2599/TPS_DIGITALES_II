@@ -40,14 +40,7 @@ El código está desarrollado en lenguaje Ensamblador (Assembly) para el microco
 ---
 
 ## 🧪 Pruebas End-to-End (E2E)
+<img width="766" height="457" alt="image" src="https://github.com/user-attachments/assets/7a502343-6896-44c9-a897-dae938658f3e" />
 
-[Escribe aquí la información sobre las pruebas E2E]
 
-### Flujos Cubiertos
-* ✅ **[Ejemplo de prueba 1]**
-* ✅ **[Ejemplo de prueba 2]**
 
-### ¿Cómo ejecutar las pruebas E2E?
-
-```bash
-# [Añade el comando real de tu proyecto]
