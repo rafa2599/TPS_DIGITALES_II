@@ -2,6 +2,7 @@
 
 ## 📖 Descripción General
 
+[EDII_TPL_2_EMigliore.pdf](https://github.com/user-attachments/files/26490393/EDII_TPL_2_EMigliore.pdf)
 
 ---
 
