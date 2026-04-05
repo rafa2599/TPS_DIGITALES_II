@@ -145,3 +145,263 @@ REPITE_PATRON_CRAW
             ; --- BUCLE INDEFINIDO DE SECUENCIAS ---
             ; Una vez terminados los 3 efectos, vuelve a chequear el sw
             GOTO    LOOP
+;*** Subrutinas ***
+		
+;===========================================================
+
+;===========================================================		
+BLINKING	MOVLW   b'11111111' ; Carga el valor binario con 8 unos 
+                MOVWF   PORTD       ; Pasa esos unos al Puerto D (Enciende todos)
+		CALL	DELAY_1s
+		CLRF    PORTD       ; Pone los 8 bits de PORTD en 0 (Apaga todos)
+		CALL	DELAY_1s
+                RETURN
+;===========================================================
+
+;===========================================================
+BLINK_RL    ; Secuencia manual RD0 a RD7
+            MOVLW   b'00000001'
+            MOVWF   PORTD
+            CALL    DELAY_300ms
+            MOVLW   b'00000010'
+            MOVWF   PORTD
+            CALL    DELAY_300ms
+            MOVLW   b'00000100'
+            MOVWF   PORTD
+            CALL    DELAY_300ms
+            MOVLW   b'00001000'
+            MOVWF   PORTD
+            CALL    DELAY_300ms
+            MOVLW   b'00010000'
+            MOVWF   PORTD
+            CALL    DELAY_300ms
+            MOVLW   b'00100000'
+            MOVWF   PORTD
+            CALL    DELAY_300ms
+            MOVLW   b'01000000'
+            MOVWF   PORTD
+            CALL    DELAY_300ms
+            MOVLW   b'10000000'
+            MOVWF   PORTD
+            CALL    DELAY_300ms
+            RETURN
+;===========================================================
+
+;===========================================================	
+BLINK_BRL   ; Efecto de Barrido Bidireccional (Ida y Vuelta) a 200ms
+            
+            ; --- IDA (Izquierda a Derecha: RD0 -> RD7) ---
+            MOVLW   b'00000001'     ; Enciende LED 0
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00000010'     ; Enciende LED 1
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00000100'     ; Enciende LED 2
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00001000'     ; Enciende LED 3
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00010000'     ; Enciende LED 4
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00100000'     ; Enciende LED 5
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'01000000'     ; Enciende LED 6
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'10000000'     ; Enciende LED 7 (Punto de rebote)
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            ; --- VUELTA (Derecha a Izquierda: RD6 -> RD1) ---
+            
+            MOVLW   b'01000000'     ; Enciende LED 6
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00100000'     ; Enciende LED 5
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00010000'     ; Enciende LED 4
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00001000'     ; Enciende LED 3
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00000100'     ; Enciende LED 2
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            MOVLW   b'00000010'     ; Enciende LED 1
+            MOVWF   PORTD
+            CALL    DELAY_200ms
+            
+            RETURN
+
+;===========================================================
+	    
+;===========================================================
+BLINK_CRAW  ; Efecto de Arrastre (Crawling) a 100ms
+            
+            MOVLW   b'00000001'     ; Enciende RD0
+            MOVWF   PORTD
+            CALL    DELAY_100ms
+            
+            MOVLW   b'00000011'     ; Mantiene RD0 y enciende RD1
+            MOVWF   PORTD
+            CALL    DELAY_100ms
+            
+            MOVLW   b'00000111'     ; Enciende hasta RD2
+            MOVWF   PORTD
+            CALL    DELAY_100ms
+            
+            MOVLW   b'00001111'     ; Enciende hasta RD3
+            MOVWF   PORTD
+            CALL    DELAY_100ms
+            
+            MOVLW   b'00011111'     ; Enciende hasta RD4
+            MOVWF   PORTD
+            CALL    DELAY_100ms
+            
+            MOVLW   b'00111111'     ; Enciende hasta RD5
+            MOVWF   PORTD
+            CALL    DELAY_100ms
+            
+            MOVLW   b'01111111'     ; Enciende hasta RD6
+            MOVWF   PORTD
+            CALL    DELAY_100ms
+            
+            MOVLW   b'11111111'     ; Enciende TODOS (RD0 a RD7)
+            MOVWF   PORTD
+            CALL    DELAY_100ms
+            
+            ; Para que el arrastre se note al repetir el ciclo, 
+            ; apagamos todo por 100ms antes de volver a empezar.
+            CLRF    PORTD
+            CALL    DELAY_100ms
+            
+            RETURN
+;===========================================================
+
+;===========================================================		
+BUCLE_RL    MOVLW   .3
+	    MOVWF   CONT_RL
+	    RETURN
+	    
+BUCLE_BRL   MOVLW   .3
+	    MOVWF   CONT_BRL
+	    RETURN
+	    
+BUCLE_CRAW  MOVLW   .3
+	    MOVWF   CONT_CRAW
+	    RETURN
+;===========================================================
+
+;===========================================================		
+DELAY_1s        MOVFW   DELAY1_Init
+                MOVWF   DELAY1
+		
+LOOP1           MOVFW   DELAY2_Init
+                MOVWF   DELAY2
+		
+LOOP2           MOVFW   DELAY3_Init
+                MOVWF   DELAY3
+		
+LOOP3           DECFSZ  DELAY3,F
+                GOTO    LOOP3
+		
+                DECFSZ  DELAY2,F
+                GOTO    LOOP2
+		
+                DECFSZ  DELAY1,F
+                GOTO    LOOP1	
+		
+		RETURN 
+;===========================================================
+
+;===========================================================		
+DELAY_300ms     MOVFW   DELAY4_Init
+                MOVWF   DELAY4
+		
+LOOP4           MOVFW   DELAY5_Init
+                MOVWF   DELAY5
+		
+LOOP5           MOVFW   DELAY6_Init
+                MOVWF   DELAY6
+		
+LOOP6           DECFSZ  DELAY6,F
+                GOTO    LOOP6
+		
+                DECFSZ  DELAY5,F
+                GOTO    LOOP5
+		
+                DECFSZ  DELAY4,F
+                GOTO    LOOP4	
+		
+		RETURN 
+;===========================================================
+		
+;===========================================================
+DELAY_200ms     MOVFW   DELAY7_Init
+                MOVWF   DELAY7
+        
+LOOP7           MOVFW   DELAY8_Init
+                MOVWF   DELAY8
+        
+LOOP8           MOVFW   DELAY9_Init
+                MOVWF   DELAY9
+        
+LOOP9           DECFSZ  DELAY9,F
+                GOTO    LOOP9
+        
+                DECFSZ  DELAY8,F
+                GOTO    LOOP8
+        
+                DECFSZ  DELAY7,F
+                GOTO    LOOP7   
+        
+                RETURN  
+;===========================================================
+		
+;===========================================================
+        
+DELAY_100ms     MOVFW   DELAY10_Init
+                MOVWF   DELAY10
+        
+LOOP10          MOVFW   DELAY11_Init
+                MOVWF   DELAY11
+        
+LOOP11          MOVFW   DELAY12_Init
+                MOVWF   DELAY12
+        
+LOOP12          DECFSZ  DELAY12,F
+                GOTO    LOOP12
+        
+                DECFSZ  DELAY11,F
+                GOTO    LOOP11
+        
+                DECFSZ  DELAY10,F
+                GOTO    LOOP10  
+        
+                RETURN  
+;===========================================================	
+
+;===========================================================
+LEDS_OFF     
+                CLRF    PORTD      ; Pone los 8 bits de PORTD en 0 (Apaga todos)
+                RETURN              
+
+                END
