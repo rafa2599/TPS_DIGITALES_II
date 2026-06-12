@@ -62,3 +62,68 @@ BUCLE_BLINK
     MOVLW   B'10111111'     ; Segmento G (Bit 6 en 0)
     MOVWF   PORTD
     
+    
+MOSTRAR_GUION
+    BCF     PORTA, 0        ; Enciende Disp 1
+    DO_DELAY .29, .10, .1   ; Retardo exacto de 7ms a 4MHz
+    BSF     PORTA, 0        ; Apaga Disp 1
+    
+    BCF     PORTA, 1        ; Enciende Disp 2
+    DO_DELAY .29, .10, .1  
+    BSF     PORTA, 1
+    
+    BCF     PORTA, 2        ; Enciende Disp 3
+    DO_DELAY .29, .10, .1  
+    BSF     PORTA, 2
+    
+    BCF     PORTA, 3        ; Enciende Disp 4
+    DO_DELAY .29, .10, .1 
+    BSF     PORTA, 3
+    
+    DECFSZ  CONT_REFRESCO, F    ; Mantiene el multiplexado vivo por 300ms
+    GOTO    MOSTRAR_GUION
+
+    ; --- FASE: APAGADO (Silencio absoluto durante 300ms) ---
+    MOVLW   0xFF
+    MOVWF   PORTA 
+    DO_DELAY .160, .135, .2 ; Retardo exacto de 300ms a 4MHz
+    
+    DECFSZ  CONT_WAIT, F    ; Cuenta los 10 parpadeos
+    GOTO    BUCLE_BLINK
+
+; --- FASE FINAL: MOSTRAR 7 INDEFINIDO ---
+    MOVLW   B'11111000'     ; Segmentos A, B, C (0=ON)
+    MOVWF   PORTD
+
+MOSTRAR_7_LOOP
+    BCF     PORTA, 0
+    DO_DELAY .29, .10, .1  
+    BSF     PORTA, 0
+    
+    BCF     PORTA, 1
+    DO_DELAY .29, .10, .1 
+    BSF     PORTA, 1
+    
+    BCF     PORTA, 2
+    DO_DELAY .29, .10, .1  
+    BSF     PORTA, 2
+    
+    BCF     PORTA, 3
+    DO_DELAY .29, .10, .1 
+    BSF     PORTA, 3
+    
+    GOTO    MOSTRAR_7_LOOP
+
+; --- SUBRUTINA DE TIEMPO ÚNICA ---
+DELAY_MASTER
+DELAY_LOOP
+    DECFSZ  D_VAR1, F       
+    GOTO    DELAY_LOOP
+    DECFSZ  D_VAR2, F       
+    GOTO    DELAY_LOOP
+    DECFSZ  D_VAR3, F       
+    GOTO    DELAY_LOOP
+    RETURN
+
+    END
+
